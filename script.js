@@ -353,8 +353,8 @@ function showToast(msg) {
 }
 
 // ===== WISHES - SHARED via JSONBin =====
-const BIN_ID = '6a01f9308deb961168de3df8';
-const API_KEY = '6a01f9308deb961168de3df8';
+const BIN_ID = '6a01fd3bc0954111d80a5992';
+const API_KEY = '$2a$10$RmuReRgEUKMKTcr12LCKWOu3Gs1SNcMcPAZdxwX1Uvdc.RCIDPQlG';
 const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
 async function loadWishes() {
