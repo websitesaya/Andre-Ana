@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generator Undangan — Andrianus & Ana Verawati</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Cinzel:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8D5A3;
+      --gold-pale: #F5EDD6;
+      --gold-dark: #8B6914;
+      --ivory: #FAF6EE;
+      --charcoal: #2C2416;
+      --brown: #5C4033;
+      --shadow: rgba(201,168,76,0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--charcoal);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Decorative border */
+    .page-border {
+      position: fixed;
+      inset: 12px;
+      border: 1px solid rgba(201,168,76,0.2);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .page-border::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(201,168,76,0.08);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 680px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: fadeInDown 1s ease;
+    }
+
+    .header-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 6px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .header-title {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      color: var(--gold-light);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 40px rgba(201,168,76,0.3);
+    }
+
+    .header-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      color: rgba(201,168,76,0.6);
+      text-transform: uppercase;
+    }
+
+    .header-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 1.5rem auto;
+      max-width: 280px;
+    }
+    .header-divider::before,
+    .header-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+    }
+    .header-divider::before { background: linear-gradient(to right, transparent, var(--gold)); }
+    .header-divider::after { background: linear-gradient(to left, transparent, var(--gold)); }
+    .header-divider span { color: var(--gold); font-size: 0.8rem; }
+
+    /* Main card */
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(201,168,76,0.4), transparent);
+    }
+
+    /* Form elements */
+    .form-group { margin-bottom: 1.2rem; }
+
+    .form-label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--ivory);
+      padding: 12px 16px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .form-input:focus {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.07);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+    }
+
+    .form-input::placeholder { color: rgba(201,168,76,0.3); font-style: italic; }
+
+    .btn-generate {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: white;
+      border: none;
+      padding: 16px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .btn-generate::before {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 300%;
+      height: 300%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) translateY(-100%); }
+      100% { transform: translateX(100%) translateY(100%); }
+    }
+
+    .btn-generate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--shadow);
+    }
+
+    .btn-generate:active { transform: translateY(0); }
+
+    /* Result section */
+    .result-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.15);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.5s ease;
+      display: none;
+    }
+
+    .result-card.show { display: block; }
+
+    .result-label {
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .result-url {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: var(--ivory);
+      word-break: break-all;
+      background: rgba(0,0,0,0.3);
+      padding: 12px 16px;
+      border-left: 2px solid var(--gold);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .result-guest {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: var(--gold-light);
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .btn-action {
+      background: none;
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold-light);
+      padding: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-action:hover {
+      background: rgba(201,168,76,0.1);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .btn-wa {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      border-color: transparent;
+      color: white;
+    }
+    .btn-wa:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(37,211,102,0.3); color: white; }
+
+    /* Bulk section */
+    .bulk-area {
+      width: 100%;
+      min-height: 180px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--ivory);
+      padding: 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.3s;
+      line-height: 1.8;
+    }
+
+    .bulk-area:focus { border-color: var(--gold); }
+    .bulk-area::placeholder { color: rgba(201,168,76,0.3); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+
+    /* Results list */
+    .results-list {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 1rem;
+    }
+
+    .results-list::-webkit-scrollbar { width: 4px; }
+    .results-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+    .results-list::-webkit-scrollbar-thumb { background: var(--gold); }
+
+    .result-list-item {
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .result-list-item:last-child { border-bottom: none; }
+
+    .result-list-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--gold-light);
+      font-style: italic;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .btn-mini {
+      background: none;
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      padding: 6px 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .btn-mini:hover { background: rgba(201,168,76,0.1); }
+
+    .btn-wa-mini {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      border-color: transparent;
+      color: white;
+    }
+    .btn-wa-mini:hover { opacity: 0.9; transform: none; }
+
+    /* Instructions */
+    .instructions {
+      background: rgba(201,168,76,0.04);
+      border: 1px solid rgba(201,168,76,0.12);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease 0.5s both;
+    }
+
+    .instruction-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .instruction-step {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 0.8rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: rgba(250,246,238,0.7);
+      line-height: 1.6;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--charcoal);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: 12px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      z-index: 9999;
+      transition: transform 0.4s ease;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: rgba(201,168,76,0.5);
+      padding: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Footer */
+    .gen-footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      animation: fadeInUp 1s ease 0.8s both;
+    }
+
+    .gen-footer p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      color: rgba(201,168,76,0.3);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 1.5rem; }
+      .btn-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-border"></div>
+<div class="toast" id="toast"></div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <p class="header-label">✦ Generator Undangan Digital ✦</p>
+    <h1 class="header-title">Andrianus & Ana</h1>
+    <p class="header-subtitle">23 Juni 2026 · Muara Ancalong</p>
+    <div class="header-divider"><span>💍</span></div>
+  </div>
+
+  <!-- Instructions -->
+  <div class="instructions">
+    <p class="instruction-title">✦ Cara Penggunaan</p>
+    <div class="instruction-step">
+      <div class="step-num">1</div>
+      <p class="step-text">Masukkan nama tamu di kolom yang tersedia (satu per satu atau banyak sekaligus via tab Massal)</p>
+    </div>
+    <div class="instruction-step">
+      <div class="step-num">2</div>
+      <p class="step-text">Klik "Buat Link Undangan" untuk menghasilkan tautan personal untuk tamu tersebut</p>
+    </div>
+    <div class="instruction-step">
+      <div class="step-num">3</div>
+      <p class="step-text">Salin link atau kirim langsung via WhatsApp ke tamu yang bersangkutan</p>
+    </div>
+    <div class="instruction-step">
+      <div class="step-num">4</div>
+      <p class="step-text">Tamu akan disambut dengan halaman pembuka yang menyebut nama mereka secara personal</p>
+    </div>
+  </div>
+
+  <!-- Main Card -->
+  <div class="card">
+    <p class="card-title">✦ Buat Undangan</p>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('single')">Satu Tamu</button>
+      <button class="tab-btn" onclick="switchTab('bulk')">Banyak Tamu</button>
+    </div>
+
+    <!-- Single Tab -->
+    <div class="tab-content active" id="tab-single">
+      <div class="form-group">
+        <label class="form-label">Nama Tamu</label>
+        <input type="text" id="guest-name" class="form-input" placeholder="Contoh: Bapak Ahmad & Ibu Siti" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL Undangan (opsional — kosongkan untuk localhost)</label>
+        <input type="text" id="base-url" class="form-input" placeholder="https://namadomainanda.com" autocomplete="off">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:0.85rem; color:rgba(201,168,76,0.5); margin-top:6px; font-style:italic;">
+          Kosongkan jika undangan dibuka dari folder lokal. Isi jika sudah dihosting.
+        </p>
+      </div>
+      <button class="btn-generate" onclick="generateSingle()">✦ Buat Link Undangan ✦</button>
+    </div>
+
+    <!-- Bulk Tab -->
+    <div class="tab-content" id="tab-bulk">
+      <div class="form-group">
+        <label class="form-label">Daftar Nama Tamu (satu nama per baris)</label>
+        <textarea class="bulk-area" id="bulk-names" placeholder="Bapak Ahmad & Ibu Siti&#10;Saudara Budi Santoso&#10;Keluarga Besar Hasan&#10;Ibu Dr. Ratna Dewi&#10;..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL Undangan (opsional)</label>
+        <input type="text" id="base-url-bulk" class="form-input" placeholder="https://namadomainanda.com" autocomplete="off">
+      </div>
+      <button class="btn-generate" onclick="generateBulk()">✦ Buat Semua Link ✦</button>
+    </div>
+  </div>
+
+  <!-- Single Result -->
+  <div class="result-card" id="single-result">
+    <p class="result-label">✦ Undangan untuk</p>
+    <p class="result-guest" id="result-guest-name"></p>
+    <p class="result-label" style="margin-top:1rem;">Link Undangan Personal</p>
+    <div class="result-url" id="result-url"></div>
+    <div class="btn-row">
+      <button class="btn-action" onclick="copyLink()">
+        <span>⎘</span> Salin Link
+      </button>
+      <button class="btn-action btn-wa" onclick="sendWA()">
+        <span>📱</span> Kirim via WA
+      </button>
+    </div>
+  </div>
+
+  <!-- Bulk Results -->
+  <div class="result-card" id="bulk-result">
+    <p class="result-label">✦ Link Undangan untuk Semua Tamu</p>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+      <span id="bulk-count" style="font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--gold-light); font-style:italic;"></span>
+      <button class="btn-action" onclick="copyAllLinks()" style="width:auto;">
+        ⎘ Salin Semua
+      </button>
+    </div>
+    <div class="results-list" id="bulk-list"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="gen-footer">
+    <p>✦ Undangan Digital Premium ✦</p>
+    <p style="margin-top:6px;">Instagram: @rijaldelimanafe &nbsp;|&nbsp; WA: 081338596854</p>
+  </div>
+
+</div>
+
+<script>
+  // ===== TAB SWITCHING =====
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', (i === 0 && tab === 'single') || (i === 1 && tab === 'bulk'));
+    });
+    document.getElementById('tab-single').classList.toggle('active', tab === 'single');
+    document.getElementById('tab-bulk').classList.toggle('active', tab === 'bulk');
+    document.getElementById('single-result').classList.remove('show');
+    document.getElementById('bulk-result').classList.remove('show');
+  }
+
+  // ===== GENERATE SINGLE =====
+  let currentUrl = '';
+  let currentGuestName = '';
+
+  function generateSingle() {
+    const name = document.getElementById('guest-name').value.trim();
+    let base = document.getElementById('base-url').value.trim();
+
+    if (!name) { showToast('Mohon masukkan nama tamu ✦'); return; }
+
+    base = base.replace(/\/+$/, '');
+    if (!base) base = '.';
+
+    const encoded = encodeURIComponent(name);
+    const url = base === '.' 
+      ? `index.html?tamu=${encoded}` 
+      : `${base}/index.html?tamu=${encoded}`;
+
+    currentUrl = url;
+    currentGuestName = name;
+
+    document.getElementById('result-guest-name').textContent = name;
+    document.getElementById('result-url').textContent = url;
+    document.getElementById('single-result').classList.add('show');
+
+    document.getElementById('single-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function copyLink() {
+    if (!currentUrl) return;
+    copyText(currentUrl);
+    showToast('Link berhasil disalin ✓');
+  }
+
+  function sendWA() {
+    if (!currentUrl || !currentGuestName) return;
+    const msg = `Assalamu'alaikum Wr. Wb.\n\nYth. ${currentGuestName}\n\nBismillahirrahmanirrahim\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami:\n\n✨ *Andrianus Lenjau* & *Ana Verawati, Amd. Keb*\n\n📅 Selasa, 23 Juni 2026\n📍 RT 004, Dusun Belwen, Desa Long Nah\n    Kec. Muara Ancalong, Kutai Timur\n\n🔗 Undangan Digital: ${currentUrl}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa dan restu.\n\nWassalamu'alaikum Wr. Wb.\n\n_Hormat kami,_\n*Andrianus & Ana*`;
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    window.open(waUrl, '_blank');
+  }
+
+  // ===== GENERATE BULK =====
+  let allLinks = [];
+
+  function generateBulk() {
+    const raw = document.getElementById('bulk-names').value.trim();
+    let base = document.getElementById('base-url-bulk').value.trim();
+
+    if (!raw) { showToast('Mohon masukkan daftar nama tamu ✦'); return; }
+
+    const names = raw.split('\n').map(n => n.trim()).filter(n => n);
+    base = base.replace(/\/+$/, '');
+    if (!base) base = '.';
+
+    allLinks = names.map(name => {
+      const encoded = encodeURIComponent(name);
+      const url = base === '.' 
+        ? `index.html?tamu=${encoded}` 
+        : `${base}/index.html?tamu=${encoded}`;
+      return { name, url };
+    });
+
+    const container = document.getElementById('bulk-list');
+    document.getElementById('bulk-count').textContent = `${allLinks.length} undangan dibuat`;
+
+    container.innerHTML = allLinks.map((item, i) => `
+      <div class="result-list-item">
+        <span class="result-list-name">${escHtml(item.name)}</span>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="btn-mini" onclick="copyTextSingle('${escAttr(item.url)}')">⎘ Salin</button>
+          <button class="btn-mini btn-wa-mini" onclick="sendWAItem('${escAttr(item.name)}', '${escAttr(item.url)}')">📱 WA</button>
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('bulk-result').classList.add('show');
+    document.getElementById('bulk-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function copyAllLinks() {
+    if (!allLinks.length) return;
+    const text = allLinks.map(l => `${l.name}\n${l.url}`).join('\n\n');
+    copyText(text);
+    showToast(`${allLinks.length} link berhasil disalin ✓`);
+  }
+
+  function copyTextSingle(url) {
+    copyText(url);
+    showToast('Link berhasil disalin ✓');
+  }
+
+  function sendWAItem(name, url) {
+    const msg = `Assalamu'alaikum Wr. Wb.\n\nYth. ${name}\n\nBismillahirrahmanirrahim\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami:\n\n✨ *Andrianus Lenjau* & *Ana Verawati, Amd. Keb*\n\n📅 Selasa, 23 Juni 2026\n📍 RT 004, Dusun Belwen, Desa Long Nah\n    Kec. Muara Ancalong, Kutai Timur\n\n🔗 Undangan Digital: ${url}\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa dan restu.\n\nWassalamu'alaikum Wr. Wb.\n\n_Hormat kami,_\n*Andrianus & Ana*`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  // ===== UTILITIES =====
+  function copyText(text) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).catch(() => copyFallback(text));
+    } else {
+      copyFallback(text);
+    }
+  }
+
+  function copyFallback(text) {
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.style.position = 'fixed';
+    el.style.opacity = '0';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function escAttr(s) {
+    return String(s).replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+  }
+
+  // ===== READ URL PARAM & SET GUEST =====
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const guest = params.get('tamu');
+    if (guest) {
+      localStorage.setItem('weddingGuest', guest);
+    }
+  })();
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const activeTab = document.getElementById('tab-single').classList.contains('active');
+      if (activeTab) generateSingle();
+    }
+  });
+</script>
+</body>
+</html>

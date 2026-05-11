@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan Pernikahan — Andrianus & Ana Verawati</title>
+  <meta name="description" content="Undangan Pernikahan Andrianus Lenjau & Ana Verawati Amd. Keb — 23 Juni 2026">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== MUSIC ===== -->
+<audio id="bg-music" loop preload="none">
+  <source src="Westlife - Beautiful in white (Lyrics).mp3" type="audio/mpeg">
+</audio>
+
+<!-- ===== MUSIC BUTTON ===== -->
+<button id="music-btn" onclick="toggleMusic()" title="Play/Pause Music">
+  <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+</button>
+
+<!-- ===== SNOW & DOVE CANVAS ===== -->
+<canvas id="snow-canvas"></canvas>
+<canvas id="dove-canvas"></canvas>
+
+<!-- ===== OPENING SCREEN ===== -->
+<div id="opening" style="background-image: url('Latar.jpg'); background-size: cover; background-position: center;">
+  <div style="position:absolute; inset:0; background:rgba(20,14,5,0.65);"></div>
+  <div class="envelope-wrap" style="position:relative; z-index:1;">
+    <div style="font-size:4rem; margin-bottom:1rem; animation: float 3s ease-in-out infinite;">🕊️</div>
+    <p class="cover-bismillah" style="color: var(--gold); margin-bottom:0.5rem;">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+    <p class="envelope-title">Undangan Pernikahan</p>
+    <p style="font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:white; margin: 0.5rem 0;">Andrianus & Ana</p>
+    <p id="guest-name-display" class="guest-name-display"></p>
+    <p style="font-family:'Montserrat',sans-serif; font-size:0.7rem; letter-spacing:3px; color:rgba(201,168,76,0.7); margin-bottom:2rem; text-transform:uppercase;">23 Juni 2026</p>
+    <button class="open-btn" onclick="openInvitation()">✦ Buka Undangan ✦</button>
+  </div>
+</div>
+
+<!-- ===== LIGHTBOX ===== -->
+<div id="lightbox">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button id="lightbox-prev" onclick="prevPhoto()">‹</button>
+  <img id="lightbox-img" src="" alt="Foto">
+  <button id="lightbox-next" onclick="nextPhoto()">›</button>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===================================================
+     COVER
+===================================================== -->
+<section id="cover">
+  <div id="cover-bg"></div>
+  <div id="cover-overlay"></div>
+
+  <!-- Corner ornaments SVG -->
+  <svg class="corner-ornament tl" viewBox="0 0 100 100" fill="noAndrianus & Anane" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 5 Q30 5 50 50 Q5 50 5 5Z" stroke="#C9A84C" stroke-width="0.8" fill="none"/>
+    <path d="M5 5 L5 40" stroke="#C9A84C" stroke-width="0.8"/>
+    <path d="M5 5 L40 5" stroke="#C9A84C" stroke-width="0.8"/>
+    <circle cx="5" cy="5" r="3" fill="#C9A84C" opacity="0.6"/>
+    <path d="M20 5 Q5 20 5 20" stroke="#C9A84C" stroke-width="0.5" opacity="0.5"/>
+  </svg>
+  <svg class="corner-ornament tr" viewBox="0 0 100 100" fill="none">
+    <path d="M5 5 Q30 5 50 50 Q5 50 5 5Z" stroke="#C9A84C" stroke-width="0.8" fill="none"/>
+    <path d="M5 5 L5 40" stroke="#C9A84C" stroke-width="0.8"/>
+    <path d="M5 5 L40 5" stroke="#C9A84C" stroke-width="0.8"/>
+    <circle cx="5" cy="5" r="3" fill="#C9A84C" opacity="0.6"/>
+  </svg>
+  <svg class="corner-ornament bl" viewBox="0 0 100 100" fill="none">
+    <path d="M5 5 Q30 5 50 50 Q5 50 5 5Z" stroke="#C9A84C" stroke-width="0.8" fill="none"/>
+    <path d="M5 5 L5 40" stroke="#C9A84C" stroke-width="0.8"/>
+    <path d="M5 5 L40 5" stroke="#C9A84C" stroke-width="0.8"/>
+    <circle cx="5" cy="5" r="3" fill="#C9A84C" opacity="0.6"/>
+  </svg>
+  <svg class="corner-ornament br" viewBox="0 0 100 100" fill="none">
+    <path d="M5 5 Q30 5 50 50 Q5 50 5 5Z" stroke="#C9A84C" stroke-width="0.8" fill="none"/>
+    <path d="M5 5 L5 40" stroke="#C9A84C" stroke-width="0.8"/>
+    <path d="M5 5 L40 5" stroke="#C9A84C" stroke-width="0.8"/>
+    <circle cx="5" cy="5" r="3" fill="#C9A84C" opacity="0.6"/>
+  </svg>
+
+  <div class="cover-content">
+    <p class="cover-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+    <p class="cover-we-invite">✦ &nbsp; The Wedding of &nbsp; ✦</p>
+
+    <div class="cover-names">
+      <h1 class="cover-groom">Andrianus</h1>
+      <span class="cover-amp">&</span>
+      <h1 class="cover-bride">Ana Verawati</h1>
+    </div>
+
+    <div class="cover-divider"></div>
+
+    <p class="cover-date">Selasa, 23 Juni 2026 &nbsp;|&nbsp; Muara Ancalong, Kutai Timur</p>
+  </div>
+
+  <div class="scroll-indicator" onclick="scrollDown()">
+    <span>Gulir Ke Bawah</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ===================================================
+     VERSE SECTION
+===================================================== -->
+<section id="verse" class="section">
+  <div class="section-inner">
+    <p class="section-label">Firman Allah SWT</p>
+    <h2 class="section-title" style="color:var(--gold-light);">Ayat Mulia</h2>
+    <div class="gold-divider"><span class="gold-divider-icon">✦</span></div>
+
+    <div class="verse-box">
+      <p class="verse-arabic">
+        وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً
+      </p>
+      <p class="verse-translation">
+        "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."
+      </p>
+      <p class="verse-source">QS. Ar-Rum: 21</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     COUPLE SECTION
+===================================================== -->
+<section id="couple" class="section">
+  <div class="section-inner">
+    <p class="section-label">Yang Berbahagia</p>
+    <h2 class="section-title">Mempelai</h2>
+    <div class="gold-divider"><span class="gold-divider-icon">💍</span></div>
+    <p class="section-text" style="color:var(--brown); max-width:600px; margin:0 auto 3rem;">
+      Dengan penuh rasa syukur dan kebahagiaan, kami mengumumkan pernikahan putra-putri kami
+    </p>
+
+    <div class="couple-grid">
+      <!-- GROOM -->
+      <div class="couple-card groom">
+        <div class="couple-photo-frame">
+          <div class="couple-photo-border"></div>
+          <div class="couple-photo-border-2"></div>
+          <img src="Mempelai Pria.jpg" alt="Andrianus Lenjau" class="couple-photo">
+        </div>
+        <h3 class="couple-name">Andrianus Lenjau</h3>
+        <div style="width:60px; height:1px; background:var(--gold); margin:0.8rem auto;"></div>
+        <p class="couple-parents">
+          Putra Pertama dari<br>
+          <strong>Bapak Samuel Kajan</strong><br>
+          &amp; <strong>Ibu Veronika Hong</strong>
+        </p>
+        <span class="couple-son-daughter">Putra Pertama</span>
+      </div>
+
+      <!-- CENTER -->
+      <div class="couple-center">
+        <span class="couple-amp">&</span>
+        <div style="width:1px; height:60px; background:linear-gradient(to bottom, var(--gold), transparent); margin:1rem 0;"></div>
+        <span style="font-size:1.5rem;">💑</span>
+      </div>
+
+      <!-- BRIDE -->
+      <div class="couple-card bride">
+        <div class="couple-photo-frame">
+          <div class="couple-photo-border"></div>
+          <div class="couple-photo-border-2"></div>
+          <img src="Mempelai Wanita.jpg" alt="Ana Verawati" class="couple-photo">
+        </div>
+        <h3 class="couple-name">Ana Verawati</h3>
+        <p class="couple-degree">Amd. Keb</p>
+        <div style="width:60px; height:1px; background:var(--gold); margin:0.8rem auto;"></div>
+        <p class="couple-parents">
+          Putri Keempat dari<br>
+          <strong>Bapak Iskandar</strong><br>
+          &amp; <strong>Ibu Asmah</strong>
+        </p>
+        <span class="couple-son-daughter">Putri Keempat</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     GALLERY SECTION
+===================================================== -->
+<section id="gallery" class="section">
+  <div class="section-inner" style="max-width:1100px;">
+    <p class="section-label" style="color:var(--gold);">Momen Berharga</p>
+    <h2 class="section-title" style="color:var(--ivory);">Galeri Foto</h2>
+    <div class="gold-divider"><span class="gold-divider-icon">✦</span></div>
+
+    <div class="gallery-grid">
+      <!-- 20 photos -->
+      <div class="gallery-item" onclick="openLightbox(0)">
+        <img src="Foto1.jpg" alt="Foto 1" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(1)">
+        <img src="Foto2.jpg" alt="Foto 2" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(2)">
+        <img src="Foto3.jpg" alt="Foto 3" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(3)">
+        <img src="Foto4.jpg" alt="Foto 4" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(4)">
+        <img src="Foto5.jpg" alt="Foto 5" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(5)">
+        <img src="Foto6.jpg" alt="Foto 6" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(6)">
+        <img src="Foto7.jpg" alt="Foto 7" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(7)">
+        <img src="Foto8.jpg" alt="Foto 8" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(8)">
+        <img src="Foto9.jpg" alt="Foto 9" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(9)">
+        <img src="Foto10.jpg" alt="Foto 10" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(10)">
+        <img src="Foto11.jpg" alt="Foto 11" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(11)">
+        <img src="Foto12.jpg" alt="Foto 12" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(12)">
+        <img src="Foto13.jpg" alt="Foto 13" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(13)">
+        <img src="Foto14.jpg" alt="Foto 14" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(14)">
+        <img src="Foto15.jpg" alt="Foto 15" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(15)">
+        <img src="Foto16.jpg" alt="Foto 16" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(16)">
+        <img src="Foto17.jpg" alt="Foto 17" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(17)">
+        <img src="Foto18.jpg" alt="Foto 18" loading="lazy">
+        <div class="gallery-overlay"><span class="gallery-overlay-icon">⊕</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     EVENT SECTION
+===================================================== -->
+<section id="event" class="section">
+  <div class="section-inner">
+    <p class="section-label">Rangkaian Acara</p>
+    <h2 class="section-title">Hari Bahagia</h2>
+    <div class="gold-divider"><span class="gold-divider-icon">✦</span></div>
+    <p class="section-text" style="color:var(--brown);">
+      Dengan segala kerendahan hati, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu kepada kami
+    </p>
+
+    <div class="event-grid">
+      <!-- AKAD -->
+      <div class="event-card">
+        <span class="event-icon">💍</span>
+        <p class="event-type">Akad Nikah</p>
+        <h3 class="event-name">Ijab Kabul</h3>
+        <div class="event-divider"></div>
+        <div class="event-detail">
+          <strong>Hari &amp; Tanggal</strong>
+          Selasa, 23 Juni 2026
+        </div>
+        <div class="event-detail">
+          <strong>Waktu</strong>
+          08.00 WITA — Selesai
+        </div>
+        <div class="event-divider"></div>
+        <div class="event-detail">
+          <strong>Tempat</strong>
+          Kediaman Mempelai Wanita<br>
+          RT 004, Dusun Belwen<br>
+          Desa Long Nah, Kec. Muara Ancalong<br>
+          Kutai Timur, Kalimantan Timur
+        </div>
+      </div>
+
+      <!-- RESEPSI -->
+      <div class="event-card">
+        <span class="event-icon">🥂</span>
+        <p class="event-type">Resepsi Pernikahan</p>
+        <h3 class="event-name">Walimatul Ursy</h3>
+        <div class="event-divider"></div>
+        <div class="event-detail">
+          <strong>Hari &amp; Tanggal</strong>
+          Selasa, 23 Juni 2026
+        </div>
+        <div class="event-detail">
+          <strong>Waktu</strong>
+          11.00 WITA — Selesai
+        </div>
+        <div class="event-divider"></div>
+        <div class="event-detail">
+          <strong>Tempat</strong>
+          Kediaman Mempelai Wanita<br>
+          RT 004, Dusun Belwen<br>
+          Desa Long Nah, Kec. Muara Ancalong<br>
+          Kutai Timur, Kalimantan Timur
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     COUNTDOWN
+===================================================== -->
+<section id="countdown" class="section">
+  <div class="section-inner">
+    <p class="section-label" style="color:var(--gold);">Menuju Hari Bahagia</p>
+    <h2 class="section-title" style="color:var(--ivory);">Hitung Mundur</h2>
+    <div class="gold-divider"><span class="gold-divider-icon">⏳</span></div>
+
+    <div class="countdown-grid">
+      <div class="countdown-item">
+        <span class="countdown-num" id="ct-days">00</span>
+        <span class="countdown-label">Hari</span>
+      </div>
+      <span class="countdown-separator">:</span>
+      <div class="countdown-item">
+        <span class="countdown-num" id="ct-hours">00</span>
+        <span class="countdown-label">Jam</span>
+      </div>
+      <span class="countdown-separator">:</span>
+      <div class="countdown-item">
+        <span class="countdown-num" id="ct-minutes">00</span>
+        <span class="countdown-label">Menit</span>
+      </div>
+      <span class="countdown-separator">:</span>
+      <div class="countdown-item">
+        <span class="countdown-num" id="ct-seconds">00</span>
+        <span class="countdown-label">Detik</span>
+      </div>
+    </div>
+
+    <p style="margin-top:2rem; font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--gold-light); font-style:italic; text-align:center;">
+      "Sesungguhnya bersama kesulitan ada kemudahan" — QS. Al-Insyirah: 6
+    </p>
+  </div>
+</section>
+
+<!-- ===================================================
+     PROTOKOL KESEHATAN
+===================================================== -->
+<section id="protocol" class="section">
+  <div class="section-inner">
+    <p class="section-label" style="color:var(--gold);">Protokol Tamu</p>
+    <h2 class="section-title" style="color:var(--ivory);">Panduan Hadir</h2>
+    <div class="gold-divider"><span class="gold-divider-icon">✦</span></div>
+
+    <div class="protocol-grid">
+      <div class="protocol-item">
+        <span class="protocol-icon">😷</span>
+        <p class="protocol-title">Pakai Masker</p>
+        <p class="protocol-desc">Kami mengimbau seluruh tamu undangan untuk menjaga kesehatan bersama</p>
+      </div>
+      <div class="protocol-item">
+        <span class="protocol-icon">🤲</span>
+        <p class="protocol-title">Cuci Tangan</p>
+        <p class="protocol-desc">Tersedia tempat cuci tangan dan hand sanitizer di seluruh area acara</p>
+      </div>
+      <div class="protocol-item">
+        <span class="protocol-icon">📏</span>
+        <p class="protocol-title">Jaga Jarak</p>
+        <p class="protocol-desc">Mohon menjaga jarak aman untuk kenyamanan bersama selama acara</p>
+      </div>
+      <div class="protocol-item">
+        <span class="protocol-icon">💌</span>
+        <p class="protocol-title">Konfirmasi</p>
+        <p class="protocol-desc">Mohon konfirmasi kehadiran Anda melalui form ucapan di bawah ini</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     GIFT / REKENING SECTION
+===================================================== -->
+<section id="gift" class="section">
+  <div class="section-inner">
+    <p class="section-label">Hadiah Pernikahan</p>
+    <h2 class="section-title">Wedding Gift</h2>
+    <div class="gold-divider"><span class="gold-divider-icon">🎁</span></div>
+    <p class="section-text" style="color:var(--brown);">
+      Doa dan kehadiran Anda adalah hadiah terbesar bagi kami. Namun jika Anda bermaksud memberikan hadiah, Anda dapat mengirimkan melalui rekening berikut
+    </p>
+
+    <div class="atm-grid">
+      <!-- BRI CARD -->
+      <div>
+        <div class="atm-card atm-bri">
+          <div class="atm-shine"></div>
+          <div class="atm-bank-name">BRI</div>
+          <div class="atm-chip"></div>
+          <div class="atm-number">7783 &nbsp; 0100 &nbsp; 0260 &nbsp; 534</div>
+          <div class="atm-holder">
+            <div class="atm-holder-label">Card Holder</div>
+            <div class="atm-holder-name">ANA VERAWATI</div>
+          </div>
+          <!-- BRI Logo circles -->
+          <div class="atm-logo">
+            <div class="atm-logo-circle" style="background:#FF6B6B;"></div>
+            <div class="atm-logo-circle" style="background:#FFA500; margin-left:-12px;"></div>
+          </div>
+        </div>
+        <button class="atm-copy-btn" onclick="copyRek('778301000260534', 'No. Rekening BRI')">
+          ✦ Salin Nomor Rekening BRI ✦
+        </button>
+      </div>
+
+      <!-- MANDIRI CARD -->
+      <div>
+        <div class="atm-card atm-mandiri">
+          <div class="atm-shine"></div>
+          <div class="atm-bank-name">MANDIRI</div>
+          <div class="atm-chip"></div>
+          <div class="atm-number">1490 &nbsp; 0130 &nbsp; 2424 &nbsp; 54</div>
+          <div class="atm-holder">
+            <div class="atm-holder-label">Card Holder</div>
+            <div class="atm-holder-name">ANA VERAWATI</div>
+          </div>
+          <!-- Mandiri Logo -->
+          <div class="atm-logo" style="flex-direction:column; align-items:flex-end; gap:2px;">
+            <div style="width:36px; height:5px; background:linear-gradient(to right, #FFD700, #FFA500); border-radius:2px;"></div>
+            <div style="width:28px; height:5px; background:linear-gradient(to right, #FFD700, #FFA500); border-radius:2px;"></div>
+            <div style="width:20px; height:5px; background:linear-gradient(to right, #FFD700, #FFA500); border-radius:2px;"></div>
+          </div>
+        </div>
+        <button class="atm-copy-btn" onclick="copyRek('1490013024254', 'No. Rekening Mandiri')">
+          ✦ Salin Nomor Rekening Mandiri ✦
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     WISHES SECTION
+===================================================== -->
+<section id="wishes" class="section">
+  <div class="section-inner">
+    <p class="section-label" style="color:var(--gold);">Doa &amp; Harapan</p>
+    <h2 class="section-title" style="color:var(--ivory);">Buku Tamu</h2>
+    <div class="gold-divider"><span class="gold-divider-icon">✉</span></div>
+    <p class="section-text" style="color:var(--ivory-dark);">
+      Ucapan doa dan restu Anda sangat berarti bagi kebahagiaan kami. Semoga doa-doa indah Anda menjadi berkah dalam perjalanan kami bersama
+    </p>
+
+    <div class="wishes-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nama Anda</label>
+          <input type="text" id="wish-name" class="form-input" placeholder="Tulis nama Anda...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Konfirmasi Kehadiran</label>
+          <select id="wish-attendance" class="form-select form-input">
+            <option value="Hadir">✓ Insya Allah Hadir</option>
+            <option value="Tidak Hadir">✗ Tidak Dapat Hadir</option>
+            <option value="Mungkin">? Masih Belum Pasti</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ucapan &amp; Doa</label>
+        <textarea id="wish-message" class="form-textarea" placeholder="Tuliskan ucapan dan doa terbaik Anda untuk kedua mempelai..."></textarea>
+      </div>
+      <button class="submit-btn" id="wish-submit" onclick="submitWish()">
+        ✦ Kirim Ucapan ✦
+      </button>
+    </div>
+
+    <!-- Wishes List -->
+    <div class="wishes-list" id="wishes-list">
+      <p style="text-align:center; color:rgba(201,168,76,0.4); font-style:italic; font-family:'Cormorant Garamond',serif;">Memuat ucapan...</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     FOOTER
+===================================================== -->
+<footer id="footer">
+  <p class="cover-bismillah" style="color:var(--gold); font-size:1rem;">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</p>
+
+  <div class="footer-names">
+    Andrianus &amp; Ana
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <p class="footer-tagline">
+    "Dan kami jadikan dari air segala sesuatu yang hidup" — QS. Al-Anbiya: 30
+  </p>
+
+  <p style="font-family:'Montserrat',sans-serif; font-size:0.75rem; letter-spacing:3px; color:var(--gold-light); text-transform:uppercase; margin-bottom:1.5rem;">
+    Selasa, 23 Juni 2026 &nbsp;·&nbsp; Muara Ancalong, Kutai Timur
+  </p>
+
+  <p style="font-family:'Montserrat',sans-serif; font-size:0.75rem; letter-spacing:3px; color:var(--gold-light); text-transform:uppercase; margin-bottom:1.5rem;">
+    Design By &nbsp;·&nbsp; Zhald_Design
+  </p>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-social">
+    <a href="https://instagram.com/rijaldelimanafe" target="_blank" class="footer-social-link">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      @rijaldelimanafe
+    </a>
+    <a href="https://wa.me/6281338596854" target="_blank" class="footer-social-link">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      081338596854
+    </a>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <p class="footer-credit">
+    ✦ Undangan Digital Premium &nbsp;|&nbsp; @Zhald_Design &nbsp;|&nbsp; WA: 081338596854 ✦
+  </p>
+  <p class="footer-credit" style="margin-top:0.5rem;">© 2026 · Andrianus Lenjau & Ana Verawati · All Rights Reserved</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
