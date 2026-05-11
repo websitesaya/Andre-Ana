@@ -352,19 +352,23 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// ===== WISHES - SHARED via Shared Storage =====
-const STORAGE_KEY = 'wedding_wishes_andrianus_ana_2026';
+// ===== WISHES - SHARED via JSONBin =====
+const BIN_ID = '6a01f9308deb961168de3df8';
+const API_KEY = '6a01f9308deb961168de3df8';
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
 async function loadWishes() {
   const container = document.getElementById('wishes-list');
   if (!container) return;
-  
+
   try {
-    const result = await window.storage.get(STORAGE_KEY, true);
-    const wishes = result ? JSON.parse(result.value) : [];
+    const res = await fetch(BIN_URL + '/latest', {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    const data = await res.json();
+    const wishes = Array.isArray(data.record) ? data.record : [];
     renderWishes(wishes, container);
   } catch {
-    // No wishes yet or storage not available
     container.innerHTML = `<p style="text-align:center; color:rgba(201,168,76,0.4); font-style:italic; font-family:'Cormorant Garamond',serif;">Jadilah yang pertama memberikan ucapan...</p>`;
   }
 }
@@ -397,61 +401,48 @@ async function submitWish() {
   const attendance = attendEl?.value || 'Mungkin';
 
   if (!name || !message) { showToast('Mohon isi nama dan ucapan Anda ✦'); return; }
-
   if (btn) { btn.disabled = true; btn.textContent = 'Mengirim...'; }
 
   const newWish = {
     name,
     message,
     attendance,
-    time: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    time: new Date().toLocaleDateString('id-ID', {
+      day: 'numeric', month: 'long', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    })
   };
 
   try {
-    let wishes = [];
-    try {
-      const result = await window.storage.get(STORAGE_KEY, true);
-      if (result) wishes = JSON.parse(result.value);
-    } catch {}
-    
+    // Ambil data lama dulu
+    const res = await fetch(BIN_URL + '/latest', {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    const data = await res.json();
+    const wishes = Array.isArray(data.record) ? data.record : [];
+
+    // Tambahkan ucapan baru
     wishes.push(newWish);
-    await window.storage.set(STORAGE_KEY, JSON.stringify(wishes), true);
-    
+
+    // Simpan kembali
+    await fetch(BIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY
+      },
+      body: JSON.stringify(wishes)
+    });
+
     if (nameEl) nameEl.value = '';
     if (msgEl) msgEl.value = '';
-    
     await loadWishes();
     showToast('Ucapan Anda telah terkirim ♥');
-  } catch (err) {
-    // Fallback: local display only
-    const container = document.getElementById('wishes-list');
-    if (container) {
-      const div = document.createElement('div');
-      div.className = 'wish-item';
-      div.innerHTML = `
-        <div class="wish-header">
-          <span class="wish-name">${escapeHtml(name)}</span>
-          <span class="wish-attendance ${attendance === 'Hadir' ? 'hadir' : attendance === 'Tidak Hadir' ? 'tidak' : 'mungkin'}">${attendance}</span>
-        </div>
-        <p class="wish-text">"${escapeHtml(message)}"</p>
-        <span class="wish-time">Baru saja</span>
-      `;
-      container.insertBefore(div, container.firstChild);
-    }
-    if (nameEl) nameEl.value = '';
-    if (msgEl) msgEl.value = '';
-    showToast('Ucapan Anda telah terkirim ♥');
+  } catch {
+    showToast('Gagal mengirim, coba lagi ✦');
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = 'Kirim Ucapan'; }
   }
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
 }
 
 // ===== SCROLL TO SECTION =====
