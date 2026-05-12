@@ -4,7 +4,7 @@
 // ===================================
 
 // ===== READ URL PARAMS (from generator) =====
-(function() {
+(function () {
   const params = new URLSearchParams(window.location.search);
   const tamu = params.get('tamu');
   if (tamu) {
@@ -17,13 +17,13 @@ function initOpening() {
   const opening = document.getElementById('opening');
   const guestName = localStorage.getItem('weddingGuest') || '';
   const nameDisplay = document.getElementById('guest-name-display');
-  
+
   if (guestName && nameDisplay) {
     nameDisplay.textContent = 'Kepada Yth. ' + guestName;
   } else if (nameDisplay) {
     nameDisplay.textContent = '';
   }
-  
+
   if (opening) opening.classList.add('show');
 }
 
@@ -46,7 +46,7 @@ function startMusic() {
   if (!musicStarted) {
     audio.volume = 0.5;
     audio.loop = true;
-    audio.play().catch(() => {});
+    audio.play().catch(() => { });
     musicStarted = true;
     isPlaying = true;
     updateMusicBtn();
@@ -61,7 +61,7 @@ function toggleMusic() {
     audio.pause();
     isPlaying = false;
   } else {
-    audio.play().catch(() => {});
+    audio.play().catch(() => { });
     isPlaying = true;
   }
   updateMusicBtn();
@@ -222,7 +222,7 @@ function initDoves() {
     }
   }
 
-  const doves = Array.from({length: 4}, () => new Dove());
+  const doves = Array.from({ length: 4 }, () => new Dove());
 
   function animateDoves() {
     ctx.clearRect(0, 0, W, H);
@@ -352,9 +352,18 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// ===== ESCAPE HTML =====
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 // ===== WISHES - SHARED via JSONBin =====
 const BIN_ID = '6a01fd3bc0954111d80a5992';
-const API_KEY = '$2a$10$RmuReRgEUKMKTcr12LCKWOu3Gs1SNcMcPAZdxwX1Uvdc.RCIDPQlG';
+const API_KEY = '$2a$10$pMgmo/J9/toX3b3vmuGOROWMlo.aNll0p4Onhy4K2fmb8Li.YD80a';
 const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
 async function loadWishes() {
@@ -436,7 +445,9 @@ async function submitWish() {
 
     if (nameEl) nameEl.value = '';
     if (msgEl) msgEl.value = '';
-    await loadWishes();
+    setTimeout(async () => {
+      await loadWishes();
+    }, 1000);
     showToast('Ucapan Anda telah terkirim ♥');
   } catch {
     showToast('Gagal mengirim, coba lagi ✦');
