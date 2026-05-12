@@ -372,7 +372,7 @@ async function loadWishes() {
 
   try {
     const res = await fetch(BIN_URL + '/latest', {
-      headers: { 'X-Master-Key': API_KEY }
+      headers: { 'X-Access-Key': API_KEY }
     });
     const data = await res.json();
     const wishes = Array.isArray(data.record) ? data.record : [];
@@ -425,7 +425,7 @@ async function submitWish() {
   try {
     // Ambil data lama dulu
     const res = await fetch(BIN_URL + '/latest', {
-      headers: { 'X-Master-Key': API_KEY }
+      headers: { 'X-Access-Key': API_KEY }
     });
     const data = await res.json();
     const wishes = Array.isArray(data.record) ? data.record : [];
@@ -438,7 +438,7 @@ async function submitWish() {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': API_KEY
+        'X-Access-Key': API_KEY
       },
       body: JSON.stringify(wishes)
     });
