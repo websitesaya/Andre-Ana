@@ -676,7 +676,7 @@
   // ===== CONFIG =====
   const DEFAULT_BASE_URL = 'https://websitesaya.github.io/Andre-Ana/';
   const BIN_ID = '6a01fd3bc0954111d80a5992';
-  const API_KEY = '$2a$10$RmuReRgEUKMKTcr12LCKWOu3Gs1SNcMcPAZdxwX1Uvdc.RCIDPQlG';
+  const API_KEY = '$2a$10$pMgmo/J9/toX3b3vmuGOROWMlo.aNll0p4Onhy4K2fmb8Li.YD80a';
   const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
   // ===== STATE =====
@@ -879,7 +879,7 @@
   async function loadStats() {
     try {
       const res = await fetch(BIN_URL + '/latest', {
-        headers: { 'X-Master-Key': API_KEY }
+        headers: { 'X-Access-Key': API_KEY }
       });
       const data = await res.json();
       const wishes = Array.isArray(data.record) ? data.record : [];
